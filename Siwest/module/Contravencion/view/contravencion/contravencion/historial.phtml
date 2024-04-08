@@ -1,0 +1,48 @@
+<style>
+    thead th {   background-color: #5d8b3d; color: white; font-size: 12px}
+</style>
+<?php
+$title = 'Historial del conductor';
+$this->headTitle($title);
+?>
+
+<h2><?php echo $this->escapeHtml($title . ' ' . $datosCiudadano->nombre . ' ' . $datosCiudadano->apellido); ?></h2>
+
+<table class="table table-hover table-condensed table-responsive" >
+    <thead>
+    <tr>
+        <th>Nro. Boleta</th>
+        <th>Tipo Vehiculo</th>
+        <th>Municipio</th>
+        <th>Tipo Multa</th>
+        <th>Estado de Pago</th>
+        <th>Fecha de Multa</th>
+        <th>Observacion</th>
+
+    </tr></thead><tbody>
+    <?php foreach ($mostrarmulta as $contravencion) : ?>
+        <?php if ($contravencion['estadoPago'] == 'Pendiente') { ?>
+            <tr class="alert alert-danger" >
+                <td><?php echo $this->escapeHtml($contravencion['idContravencion']); ?></td>
+                <td><?php echo $this->escapeHtml($contravencion['tipvehi']); ?></td>
+                <td><?php echo $this->escapeHtml($contravencion['municipio']); ?></td>
+                <td><?php echo $this->escapeHtml($contravencion['multa']); ?></td>
+                <td><?php echo $this->escapeHtml($contravencion['estadoPago']); ?></td>
+                <td><?php echo $this->escapeHtml($contravencion['fecha']); ?></td>
+                <td><?php echo $this->escapeHtml($contravencion['observacion']); ?></td>
+
+            </tr>
+        <?php } else { ?>
+            <tr class="alert">
+                <td><?php echo $this->escapeHtml($contravencion['idContravencion']); ?></td>
+                <td><?php echo $this->escapeHtml($contravencion['tipvehi']); ?></td>
+                <td><?php echo $this->escapeHtml($contravencion['municipio']); ?></td>
+                <td><?php echo $this->escapeHtml($contravencion['multa']); ?></td>
+                <td><?php echo $this->escapeHtml($contravencion['estadoPago']); ?></td>
+                <td><?php echo $this->escapeHtml($contravencion['fecha']); ?></td>
+                <td><?php echo $this->escapeHtml($contravencion['observacion']); ?></td>
+
+            </tr>
+        <?php } ?>
+    <?php endforeach; ?>
+</tbody></table>

@@ -1,0 +1,38 @@
+<style>
+    thead th {   background-color: #5d8b3d; color: white; font-size: 12px}
+</style>
+<?php
+$title = 'Articulos descripción - Multas';
+$this->headTitle($title);
+?>
+<h1 align="center"><?php echo $this->escapeHtml($title); ?></h1>
+<p><a href="<?php echo $this->url('multasdescripcion', array(
+    'action' => 'add'));
+?>" class="btn btn-primary">Agregar Multa</a></p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Articulo</th>
+            <th>Descripcion</th>
+            <th>Jornales</th>
+            <th>Monto</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+<?php foreach ($multasdesc as $multasdescripcion) : ?>
+            <tr>
+                <td><?php echo $this->escapeHtml('Nro ' . $multasdescripcion->articuloNro); ?></td>
+                <td><?php echo $this->escapeHtml($multasdescripcion->descripcion); ?></td>
+                <td><?php echo $this->escapeHtml($multasdescripcion->jornales); ?></td>
+                <td><?php echo $this->escapeHtml($multasdescripcion->monto); ?></td>
+                <td>
+                    <a href="<?php echo $this->url('multasdescripcion', array('action' => 'edit', 'id' => $multasdescripcion->idMulta));
+    ?>" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil"></span></a>
+                    <a href="<?php echo $this->url('multasdescripcion', array('action' => 'delete', 'id' => $multasdescripcion->idMulta));
+    ?>" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span></a>
+                </td>
+            </tr>
+<?php endforeach; ?>
+    </tbody></table>

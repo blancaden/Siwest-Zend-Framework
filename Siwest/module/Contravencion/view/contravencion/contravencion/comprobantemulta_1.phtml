@@ -1,0 +1,31 @@
+<?php require_once ('../' . $this->basePath() . '/dompdf/dompdf_config.inc.php'); 
+
+$html = '';
+$html .= '
+<table>
+    <tr>
+        <td style="padding:5%; padding-top: 0%"><img src="http://'.$_SERVER['HTTP_HOST']. $this->basePath() . '/img/paraguay1.png' .'" align="left" /></td>
+        <td><span style="font-size: 20px; font-weight: bold">MINISTERIO DE OBRAS PUBLICAS Y COMUNICACIONES</span><br>
+            <span>Direccion de Control y Seguridad de Transito</span><br>
+            <b>POLICIA CAMINERA</b><br>
+            <span><b>Telefono:</b> 532-689 - 584256</span><br>
+        </td>
+        <td align="right" style="padding:3%"><b>NRO BOLETA:</b><br> 123456</td>
+    </tr>  
+</table>';
+$html .= '<h3 align="center"> BOLETA DE CONTRAVENCION</h3><br>';
+$html .= '<b>Conductor: </b>'.$datosCiudadano->nombre. ' <b>C.I: </b>'.$datosCiudadano->cedula.' <b>Nro Registro: </b>'.$datosCiudadano->registroNro.' <b>Municipio:</b>'. $mostrarmulta->idMunicipio ;
+$html .= ' <b>Vehiculo: </b>'.$mostrarmulta->idTipoVehiculo.' <b>Chapa Nro: </b>'.$mostrarmulta->numeroChapa. '<b>Contravencion: </b>'.$mostrarmulta->idMulta.' <b>km:</b> '.$mostrarmulta->km.' <b>Ruta:</b> '.$mostrarmulta->ruta. ' <b>Fecha-Hora: </b> '.$mostrarmulta->fecha;
+$html .= '<p><b>Queda Ud. notificado que dentro de los 5 días habiles deberá presentarse a la policia caminera de: '.$mostrarmulta->idMunicipio.' bajo apercibimiento or lo dispuesto en el Articulo 208
+    del decreto Ley Nro: 22094 Reglamento general de Tránsito Caminero</b>.</p>';
+
+$html .= '<span align="right"><b>Fecha:</b>'.$mostrarmulta->fecha.'</span><br>';
+$html .= '<span style="font-size:20px"><b>Válido por Cinco (5) días hábiles<b></span>';
+
+ob_start();
+$dompdf = new DOMPDF();
+$dompdf->load_html($html);
+$dompdf->render();
+$dompdf->stream('Boleta-Contavencion:'.$idContravencion.'.pdf'); 
+
+ob_end_flush();

@@ -1,0 +1,62 @@
+<?php
+$title = 'Agregar Multa a: ';
+$this->headTitle($title);
+?>
+<div align="right"><a href="<?php echo $this->url('contravencion', array('action'=> 'buscador')) ?> " class="btn btn-default"> <span class="glyphicon glyphicon-chevron-left"></span> volver a buscador</a></div>
+<h2><?php echo $this->escapeHtml($title . ' ' . $datosCiudadano->nombre . ' ' . $datosCiudadano->apellido); ?></h2> <a href="<?php echo $this->url('ciudadano', array('action'=> 'edit', 'id' =>$datosCiudadano->idConductor )) ?> " class="btn btn-default "> Modificar Conductor </a>
+<hr>
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url('contravencion', array('action' => 'addmulta', 'id' => $idConductor)));
+$form->prepare();
+
+echo $this->form()->openTag($form);
+echo $this->formHidden($form->get('idContravencion')) ;
+echo $this->formHidden($form->get('idConductor')) ;?>
+<div class="form-inline">
+<div class="form-group"> <?php echo $this->formLabel($form->get('idTipoVehiculo'));?> <br>
+<?php echo $this->formSelect($form->get('idTipoVehiculo'));?></div>
+<div class="form-group"><?php echo $this->formLabel($form->get('idMunicipio'));?> <br> 
+<?php echo $this->formSelect($form->get('idMunicipio'));?></div>
+<div class="form-group"><?php echo $this->formLabel($form->get('idMulta'));?> <br>  
+<?php echo $this->formSelect($form->get('idMulta'));?></div>
+<div class="form-group"><?php echo $this->formRow($form->get('km'));?> </div>
+<div class="form-group"><?php echo $this->formRow($form->get('numeroChapa'));?> </div>
+<div class="form-group"><?php echo $this->formRow($form->get('excedenteKgs'));?> </div>
+<div class="form-group"><?php echo $this->formRow($form->get('ruta'));?> </div>
+<div class="form-group"><?php echo $this->formRow($form->get('montoMultaBasculaRadar'));?> </div>
+
+<div class="form-group"><?php echo $this->formLabel($form->get('estadoPago'));?> <br>
+<?php echo $this->formSelect($form->get('estadoPago'));?></div>
+<div class="form-group"><?php echo $this->formLabel($form->get('tieneRegistro'));?><br>
+<?php echo $this->formSelect($form->get('tieneRegistro'));?></div>
+<div class="form-group"><?php echo $this->formRow($form->get('observacion'));?> </div>
+
+<div class="form-group"><?php echo $this->formInput($form->get('submit')); ?></div>
+</div>
+<?php echo $this->form()->closeTag($form);?>
+
+
+<?php if(count($mostrarmulta) <> 0){?>
+<hr>
+<table class="table">
+<tr>
+    <th>Nro. Boleta</th>
+    <th>Tipo Vehiculo</th>
+    <th>Municipio</th>
+    <th>Tipo Multa</th>
+    <th>Estado de Pago</th>
+    <th>&nbsp;</th>
+</tr>
+<?php foreach($mostrarmulta as $contravencion) : ?>
+<tr>
+    <td><?php echo $this->escapeHtml($contravencion['idContravencion']);?></td>
+    <td><?php echo $this->escapeHtml($contravencion['tipvehi']);?></td>
+    <td><?php echo $this->escapeHtml($contravencion['municipio']);?></td>
+    <td><?php echo $this->escapeHtml($contravencion['multa']);?></td>
+    <td><?php echo $this->escapeHtml($contravencion['estadoPago']);?></td>
+
+</tr>
+<?php endforeach; ?>
+</table>
+<?php } ?>

@@ -1,0 +1,503 @@
+
+
+
+CREATE DATABASE `siwest`
+    CHARACTER SET 'latin1'
+    COLLATE 'latin1_swedish_ci';
+
+USE `siwest`;
+
+#
+# Structure for the `album` table : 
+#
+
+CREATE TABLE `album` (
+  `id` INTEGER(11) NOT NULL AUTO_INCREMENT,
+  `artist` VARCHAR(100) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
+  `title` VARCHAR(100) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+
+)ENGINE=InnoDB
+AUTO_INCREMENT=7 CHARACTER SET 'latin1' COLLATE 'latin1_swedish_ci';
+
+#
+# Structure for the `boleta` table : 
+#
+
+CREATE TABLE `boleta` (
+  `idBoleta` INTEGER(11) NOT NULL AUTO_INCREMENT,
+  `numeroBoleta` INTEGER(11) DEFAULT NULL,
+  PRIMARY KEY (`idBoleta`),
+  UNIQUE KEY `idBoleta` (`idBoleta`),
+  UNIQUE KEY `numeroBoleta` (`numeroBoleta`)
+
+)ENGINE=InnoDB
+AUTO_INCREMENT=1 CHARACTER SET 'latin1' COLLATE 'latin1_swedish_ci';
+
+#
+# Structure for the `ciudadano` table : 
+#
+
+CREATE TABLE `ciudadano` (
+  `idConductor` INTEGER(11) NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(30) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
+  `apellido` VARCHAR(30) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
+  `cedula` VARCHAR(20) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
+  `direccion` VARCHAR(20) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
+  `telefono` VARCHAR(20) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
+  `registroNro` VARCHAR(50) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
+  `email` VARCHAR(60) COLLATE latin1_swedish_ci DEFAULT NULL,
+  PRIMARY KEY (`idConductor`),
+  UNIQUE KEY `id` (`idConductor`),
+  UNIQUE KEY `CI` (`cedula`),
+  UNIQUE KEY `REGISTRONRO` (`registroNro`),
+  UNIQUE KEY `ci_2` (`cedula`),
+  UNIQUE KEY `registroNro_2` (`registroNro`),
+  UNIQUE KEY `cedula` (`cedula`)
+
+)ENGINE=InnoDB
+AUTO_INCREMENT=14 CHARACTER SET 'latin1' COLLATE 'latin1_swedish_ci';
+
+#
+# Structure for the `multasdescripcion` table : 
+#
+
+CREATE TABLE `multasdescripcion` (
+  `idMulta` INTEGER(11) NOT NULL AUTO_INCREMENT,
+  `articuloNro` INTEGER(11) DEFAULT NULL,
+  `descripcion` VARCHAR(60) COLLATE latin1_swedish_ci DEFAULT NULL,
+  `jornales` INTEGER(11) DEFAULT NULL,
+  `monto` INTEGER(20) DEFAULT NULL,
+  PRIMARY KEY (`idMulta`),
+  UNIQUE KEY `idMulta` (`idMulta`)
+
+)ENGINE=InnoDB
+AUTO_INCREMENT=12 CHARACTER SET 'latin1' COLLATE 'latin1_swedish_ci';
+
+#
+# Structure for the `contravencion` table : 
+#
+
+CREATE TABLE `contravencion` (
+  `idContravencion` INTEGER(11) NOT NULL AUTO_INCREMENT,
+  `idConductor` INTEGER(11) DEFAULT NULL,
+  `idMunicipio` INTEGER(11) NOT NULL,
+  `idTipoVehiculo` INTEGER(11) DEFAULT NULL,
+  `idMulta` INTEGER(11) NOT NULL,
+  `km` VARCHAR(30) COLLATE latin1_swedish_ci NOT NULL DEFAULT '\r\n',
+  `fecha` TIMESTAMP(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `numeroChapa` VARCHAR(20) COLLATE latin1_swedish_ci DEFAULT NULL,
+  `observacion` VARCHAR(50) COLLATE latin1_swedish_ci DEFAULT NULL,
+  `idUsuario` INTEGER(11) DEFAULT NULL,
+  `ruta` VARCHAR(20) COLLATE latin1_swedish_ci DEFAULT NULL,
+  `excedenteKgs` FLOAT(10,3) DEFAULT NULL,
+  `montoMultaBasculaRadar` INTEGER(11) DEFAULT NULL,
+  `estadoPago` ENUM('Pendiente','Pagado') DEFAULT 'Pendiente',
+  `tieneRegistro` ENUM('SI','NO') NOT NULL,
+  PRIMARY KEY (`idContravencion`),
+  UNIQUE KEY `idContravencion` (`idContravencion`),
+  KEY `idConductor` (`idConductor`),
+  KEY `idMulta` (`idMulta`),
+  KEY `idVehiculo` (`idTipoVehiculo`),
+  CONSTRAINT `contravencion_fk` FOREIGN KEY (`idConductor`) REFERENCES `ciudadano` (`idConductor`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `contravencion_fk1` FOREIGN KEY (`idMulta`) REFERENCES `multasdescripcion` (`idMulta`) ON DELETE NO ACTION ON UPDATE NO ACTION
+
+)ENGINE=InnoDB
+AUTO_INCREMENT=1113 CHARACTER SET 'latin1' COLLATE 'latin1_swedish_ci';
+
+#
+# Structure for the `municipio` table : 
+#
+
+CREATE TABLE `municipio` (
+  `idMunicipio` INTEGER(11) NOT NULL AUTO_INCREMENT,
+  `municipio` VARCHAR(50) COLLATE latin1_swedish_ci DEFAULT NULL,
+  PRIMARY KEY (`idMunicipio`)
+
+)ENGINE=InnoDB
+AUTO_INCREMENT=9 CHARACTER SET 'latin1' COLLATE 'latin1_swedish_ci';
+
+#
+# Structure for the `pago` table : 
+#
+
+CREATE TABLE `pago` (
+  `idPago` INTEGER(11) NOT NULL AUTO_INCREMENT,
+  `idContravencion` INTEGER(11) DEFAULT NULL,
+  `fechaPago` TIMESTAMP(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `idUsuario` INTEGER(11) DEFAULT NULL,
+  PRIMARY KEY (`idPago`)
+
+)ENGINE=InnoDB
+AUTO_INCREMENT=1079 CHARACTER SET 'latin1' COLLATE 'latin1_swedish_ci';
+
+#
+# Structure for the `tipovehiculo` table : 
+#
+
+CREATE TABLE `tipovehiculo` (
+  `idTipoVehiculo` INTEGER(11) NOT NULL AUTO_INCREMENT,
+  `descripcion` VARCHAR(30) COLLATE latin1_swedish_ci DEFAULT NULL,
+  PRIMARY KEY (`idTipoVehiculo`),
+  UNIQUE KEY `idTipoVehiculo` (`idTipoVehiculo`)
+
+)ENGINE=InnoDB
+AUTO_INCREMENT=5 CHARACTER SET 'latin1' COLLATE 'latin1_swedish_ci';
+
+#
+# Structure for the `user` table : 
+#
+
+CREATE TABLE `user` (
+  `user_id` INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(255) COLLATE utf8_general_ci DEFAULT NULL,
+  `email` VARCHAR(255) COLLATE utf8_general_ci DEFAULT NULL,
+  `display_name` VARCHAR(50) COLLATE utf8_general_ci DEFAULT NULL,
+  `password` VARCHAR(128) COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `state` SMALLINT(5) UNSIGNED DEFAULT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `username` (`username`),
+  UNIQUE KEY `email` (`email`)
+
+)ENGINE=InnoDB
+AUTO_INCREMENT=6 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci';
+
+#
+# Structure for the `user_role` table : 
+#
+
+CREATE TABLE `user_role` (
+  `role_id` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `default` TINYINT(1) NOT NULL,
+  `parent` VARCHAR(255) COLLATE utf8_general_ci DEFAULT NULL,
+  PRIMARY KEY (`role_id`)
+
+)ENGINE=InnoDB
+CHARACTER SET 'utf8' COLLATE 'utf8_general_ci';
+
+#
+# Structure for the `user_role_linker` table : 
+#
+
+CREATE TABLE `user_role_linker` (
+  `user_id` INTEGER(11) UNSIGNED NOT NULL,
+  `role_id` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`user_id`, `role_id`),
+  KEY `role_id` (`role_id`)
+
+)ENGINE=InnoDB
+CHARACTER SET 'utf8' COLLATE 'utf8_general_ci';
+
+#
+# Structure for the `vehiculo` table : 
+#
+
+CREATE TABLE `vehiculo` (
+  `idVehiculo` INTEGER(11) NOT NULL AUTO_INCREMENT,
+  `nroChapa` VARCHAR(20) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
+  `color` VARCHAR(20) COLLATE latin1_swedish_ci DEFAULT NULL,
+  `modelo` VARCHAR(50) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
+  `cedulaAutomotor` VARCHAR(50) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
+  `propietario` VARCHAR(50) COLLATE latin1_swedish_ci DEFAULT NULL,
+  `ci_Propietario` VARCHAR(20) COLLATE latin1_swedish_ci DEFAULT '',
+  `idTipoVehiculo` INTEGER(11) DEFAULT NULL,
+  PRIMARY KEY (`nroChapa`),
+  UNIQUE KEY `NROCHAPA` (`nroChapa`),
+  UNIQUE KEY `CEDULAAUTOMOTOR` (`cedulaAutomotor`),
+  UNIQUE KEY `idVehiculo` (`idVehiculo`),
+  UNIQUE KEY `cedulaAutomotor_2` (`cedulaAutomotor`),
+  UNIQUE KEY `PROPIETARIO` (`propietario`),
+  UNIQUE KEY `propietario_2` (`propietario`),
+  KEY `CI_PROPIETARIO` (`ci_Propietario`),
+  KEY `idTipoVehiculo` (`idTipoVehiculo`)
+
+)ENGINE=InnoDB
+AUTO_INCREMENT=4 CHARACTER SET 'latin1' COLLATE 'latin1_swedish_ci';
+
+#
+# Definition for the `buscadorXrango` procedure : 
+#
+
+CREATE DEFINER = 'root'@'localhost' PROCEDURE `buscadorXrango`(IN pFechaInicio VARCHAR(20), IN pFechaFinal VARCHAR(20), IN pIdUsuario INTEGER(11), IN pEstadoPago VARCHAR(20))
+    NOT DETERMINISTIC
+    CONTAINS SQL
+    SQL SECURITY DEFINER
+    COMMENT ''
+BEGIN
+DECLARE vFechaInicio VARCHAR(20);
+DECLARE vFechaFinal VARCHAR(20);
+IF( NOT ISNULL(pFechaInicio) AND NOT ISNULL(pFechaFinal))THEN
+IF(ISNULL(pIdUsuario) AND pEstadoPago = '')THEN
+	SELECT * , u.display_name AS inspector FROM contravencion AS c
+    JOIN user AS u ON u.user_id = c.`idUsuario`
+    JOIN `ciudadano` AS co ON co.`idConductor` = c.`idConductor`
+    JOIN `multasdescripcion` AS md ON md.`idMulta` = c.`idMulta`
+	WHERE c.`fecha` BETWEEN pFechaInicio AND pFechaFinal
+	ORDER BY c.`fecha` DESC ;
+ELSEIF(NOT ISNULL(pIdUsuario) AND pEstadoPago != '')THEN
+	SELECT * , u.display_name AS inspector  FROM contravencion AS c
+    JOIN user AS u ON u.user_id = c.`idUsuario`
+    JOIN `ciudadano` AS co ON co.`idConductor` = c.`idConductor`
+     JOIN `multasdescripcion` AS md ON md.`idMulta` = c.`idMulta`
+	WHERE c.`idUsuario` = pIdUsuario AND c.`fecha` BETWEEN pFechaInicio AND pFechaFinal
+    AND c.`estadoPago` = pEstadoPago
+	ORDER BY c.`fecha` DESC;
+ELSEIF(NOT ISNULL(pIdUsuario) AND pEstadoPago = '')THEN
+	SELECT * , u.display_name AS inspector  FROM contravencion AS c
+    JOIN user AS u ON u.user_id = c.`idUsuario`
+    JOIN `ciudadano` AS co ON co.`idConductor` = c.`idConductor`
+     JOIN `multasdescripcion` AS md ON md.`idMulta` = c.`idMulta`
+	WHERE c.`idUsuario` = pIdUsuario AND c.`fecha` BETWEEN pFechaInicio AND pFechaFinal
+	ORDER BY c.`fecha` DESC;
+ELSEIF(ISNULL(pIdUsuario) AND pEstadoPago != '')THEN
+	SELECT * , u.display_name AS inspector FROM contravencion AS c
+    JOIN user AS u ON u.user_id = c.`idUsuario`
+    JOIN `ciudadano` AS co ON co.`idConductor` = c.`idConductor`
+     JOIN `multasdescripcion` AS md ON md.`idMulta` = c.`idMulta`
+	WHERE  c.`estadoPago` = pEstadoPago AND c.`fecha` BETWEEN pFechaInicio AND pFechaFinal
+	ORDER BY c.`fecha` DESC;
+
+END IF;
+ELSE
+IF(NOT ISNULL(pFechaInicio) AND ISNULL(pFechaFinal))THEN
+    SET vFechaInicio = CONCAT(pFechaInicio,'00:00:00');
+    SET vFechaFinal = CONCAT(pFechaInicio,'23:59:59');
+  IF(ISNULL(pIdUsuario) AND pEstadoPago = '')THEN
+	SELECT *, u.display_name AS inspector  FROM contravencion AS c
+    JOIN user AS u ON u.user_id = c.`idUsuario`
+    JOIN `ciudadano` AS co ON co.`idConductor` = c.`idConductor`
+    JOIN `multasdescripcion` AS md ON md.`idMulta` = c.`idMulta`
+	WHERE c.`fecha` BETWEEN pFechaInicio AND pFechaFinal
+	ORDER BY c.`fecha` DESC ;
+ELSEIF(NOT ISNULL(pIdUsuario) AND pEstadoPago != '')THEN
+	SELECT * , u.display_name AS inspector  FROM contravencion AS c
+    JOIN user AS u ON u.user_id = c.`idUsuario`
+    JOIN `ciudadano` AS co ON co.`idConductor` = c.`idConductor`
+     JOIN `multasdescripcion` AS md ON md.`idMulta` = c.`idMulta`
+	WHERE c.`idUsuario` = pIdUsuario AND c.`fecha` BETWEEN pFechaInicio AND pFechaFinal
+    AND c.`estadoPago` = pEstadoPago
+	ORDER BY c.`fecha` DESC;
+ELSEIF(NOT ISNULL(pIdUsuario) AND pEstadoPago = '')THEN
+	SELECT *, u.display_name AS inspector  FROM contravencion AS c
+    JOIN user AS u ON u.user_id = c.`idUsuario`
+    JOIN `ciudadano` AS co ON co.`idConductor` = c.`idConductor`
+     JOIN `multasdescripcion` AS md ON md.`idMulta` = c.`idMulta`
+	WHERE c.`idUsuario` = pIdUsuario AND c.`fecha` BETWEEN pFechaInicio AND pFechaFinal
+	ORDER BY c.`fecha` DESC;
+ELSEIF(ISNULL(pIdUsuario) AND pEstadoPago != '')THEN
+	SELECT * , u.display_name AS inspector  FROM contravencion AS c
+    JOIN user AS u ON u.user_id = c.`idUsuario`
+    JOIN `ciudadano` AS co ON co.`idConductor` = c.`idConductor`
+     JOIN `multasdescripcion` AS md ON md.`idMulta` = c.`idMulta`
+	WHERE  c.`estadoPago` = pEstadoPago AND c.`fecha` BETWEEN pFechaInicio AND pFechaFinal
+	ORDER BY c.`fecha` DESC;
+
+END IF;
+   END IF;
+END IF;
+END;
+
+#
+# Definition for the `realizarPago` procedure : 
+#
+
+CREATE DEFINER = 'root'@'localhost' PROCEDURE `realizarPago`(IN pIdContravencion INTEGER(11), IN pIdUsuario INTEGER(11))
+    NOT DETERMINISTIC
+    CONTAINS SQL
+    SQL SECURITY DEFINER
+    COMMENT ''
+BEGIN
+UPDATE contravencion SET estadoPago = 'Pagado'
+WHERE idContravencion =  pIdContravencion;
+
+INSERT INTO `pago` (idContravencion,idUsuario)
+VALUES(pIdContravencion,pIdUsuario );
+
+END;
+
+#
+# Data for the `album` table  (LIMIT 0,500)
+#
+
+INSERT INTO `album` (`id`, `artist`, `title`) VALUES
+  (1,'The Military Wives','In My Dreams'),
+  (2,'Adele','21'),
+  (3,'Bruce Springsteen','Wrecking Ball (Deluxe)'),
+  (4,'Lana Del Rey','Born To Die'),
+  (5,'Gotye','Making Mirrors'),
+  (6,'PAVADAPRUEBA','PRUEBA');
+COMMIT;
+
+#
+# Data for the `ciudadano` table  (LIMIT 0,500)
+#
+
+INSERT INTO `ciudadano` (`idConductor`, `nombre`, `apellido`, `cedula`, `direccion`, `telefono`, `registroNro`, `email`) VALUES
+  (12,'Blanca','Gonzalez','4502876','km 27 ruta 1','0982 882 152','315 215','blankdgonzfigue@gmail.com'),
+  (13,'Santi','Olmedo','456789','km 22','0986 156 123','123456','santi@gmail.com');
+COMMIT;
+
+#
+# Data for the `multasdescripcion` table  (LIMIT 0,500)
+#
+
+INSERT INTO `multasdescripcion` (`idMulta`, `articuloNro`, `descripcion`, `jornales`, `monto`) VALUES
+  (1,4,'Imprudencia en el manejo',5,318890),
+  (4,5,'Conducir en estado etilico (hasta 0,20%)',10,637780),
+  (5,5,'Conducir en estado etilico (hasta 0,80%)',15,956670),
+  (6,5,'Conducir en estado etilico (desde 0,81% y +)',20,1275560),
+  (7,6,'Menor de edad en el volante',10,637780),
+  (8,7,'Estacionar sobre ruta con desperfecto',5,318890),
+  (9,69,'Carecer de registro de conducir',10,637780),
+  (10,87,'Registro vencido y/o deteriorado.',5,318890),
+  (11,97,'Adelantamiento Indebido',5,318890);
+COMMIT;
+
+#
+# Data for the `contravencion` table  (LIMIT 0,500)
+#
+
+INSERT INTO `contravencion` (`idContravencion`, `idConductor`, `idMunicipio`, `idTipoVehiculo`, `idMulta`, `km`, `fecha`, `numeroChapa`, `observacion`, `idUsuario`, `ruta`, `excedenteKgs`, `montoMultaBasculaRadar`, `estadoPago`, `tieneRegistro`) VALUES
+  (1094,12,5,1,7,'21','2014-11-21 22:01:13','123456','aaaa',1,'1',1.000,1,'Pagado','NO'),
+  (1095,12,2,2,6,'12','2014-11-21 22:03:17','123','',1,'1',0.000,0,'Pendiente','SI'),
+  (1096,12,3,2,6,'1','2014-11-21 23:11:46','1255','bbbb',1,'',0.000,0,'Pendiente','SI'),
+  (1097,12,4,2,8,'1','2014-11-22 07:18:28','123456','',1,'2',0.000,0,'Pendiente','SI'),
+  (1098,12,2,2,6,'25','2014-11-22 08:37:03','2222','',1,'21',0.000,5,'Pendiente','SI'),
+  (1099,12,3,4,5,'12','2014-11-22 08:38:32','','',1,'',0.000,0,'Pendiente','SI'),
+  (1100,12,6,3,11,'27','2014-11-22 10:10:50','256','',1,'2',1.000,0,'Pendiente','SI'),
+  (1101,12,2,3,9,'27','2014-11-22 10:13:18','1254','',1,'1',0.000,0,'Pendiente','SI'),
+  (1102,12,2,4,9,'27','2014-11-22 10:14:41','','',1,'1',1.000,1,'Pendiente','SI'),
+  (1103,12,2,1,4,'2','2014-11-22 10:18:46','2','',1,'',0.000,0,'Pendiente','SI'),
+  (1104,12,2,1,5,'2','2014-11-22 10:27:18','123','',1,'12',0.000,0,'Pendiente','SI'),
+  (1105,12,2,2,5,'12','2014-11-22 10:28:07','1222','',1,'12',0.000,0,'Pendiente','SI'),
+  (1106,12,3,2,6,'12','2014-11-22 10:30:02','123','',1,'2',0.000,0,'Pendiente','SI'),
+  (1107,12,4,2,7,'20','2014-11-22 10:31:18','123456','',1,'2',1.000,0,'Pendiente','SI'),
+  (1108,12,3,3,6,'2','2014-11-22 10:33:09','456','',1,'2',0.000,0,'Pendiente','SI'),
+  (1109,12,4,3,5,'27','2014-11-22 11:24:01','1','',4,'12',1.000,12,'Pendiente','SI'),
+  (1110,12,5,1,6,'27','2014-11-22 11:25:41','123','',1,'12',1.000,1,'Pagado','SI'),
+  (1111,12,4,2,5,'20','2014-11-22 19:47:40','123','',1,'20',0.000,25,'Pagado','SI'),
+  (1112,13,4,1,6,'27','2014-12-06 23:45:58','123456','',5,'52',52.000,52,'Pagado','SI');
+COMMIT;
+
+#
+# Data for the `municipio` table  (LIMIT 0,500)
+#
+
+INSERT INTO `municipio` (`idMunicipio`, `municipio`) VALUES
+  (1,'Ypacarai'),
+  (2,'Asuncion'),
+  (3,'Aregua'),
+  (4,'San Lorenzo'),
+  (5,'Fdo.de la Mora'),
+  (6,'J.A.Saldivar'),
+  (7,'Guarambare'),
+  (8,'Lambare');
+COMMIT;
+
+#
+# Data for the `pago` table  (LIMIT 0,500)
+#
+
+INSERT INTO `pago` (`idPago`, `idContravencion`, `fechaPago`, `idUsuario`) VALUES
+  (1040,1063,'2014-11-02 12:35:37',1),
+  (1041,1064,'2014-11-16 10:00:41',1),
+  (1042,1065,'2014-11-16 10:49:13',1),
+  (1043,1066,'2014-11-16 10:51:00',1),
+  (1044,1066,'2014-11-16 10:51:07',1),
+  (1045,1067,'2014-11-16 10:52:36',1),
+  (1046,1068,'2014-11-16 11:25:09',1),
+  (1047,1069,'2014-11-16 11:27:31',1),
+  (1048,1070,'2014-11-16 11:28:11',1),
+  (1049,1071,'2014-11-16 11:29:50',1),
+  (1050,1072,'2014-11-16 11:30:55',1),
+  (1051,1073,'2014-11-16 11:39:04',1),
+  (1052,1074,'2014-11-16 11:41:11',1),
+  (1053,1075,'2014-11-16 11:45:57',1),
+  (1054,1076,'2014-11-16 11:46:57',1),
+  (1055,1077,'2014-11-16 11:48:48',1),
+  (1056,1078,'2014-11-16 11:53:04',1),
+  (1057,1079,'2014-11-16 11:56:44',1),
+  (1058,1080,'2014-11-16 11:57:56',1),
+  (1059,1081,'2014-11-16 12:01:03',1),
+  (1060,1082,'2014-11-16 12:07:02',1),
+  (1061,1083,'2014-11-21 19:06:01',1),
+  (1062,1084,'2014-11-21 21:07:34',1),
+  (1063,1084,'2014-11-22 06:53:48',1),
+  (1064,1084,'2014-11-22 06:54:00',1),
+  (1065,1085,'2014-11-22 11:18:14',4),
+  (1066,1085,'2014-11-22 11:20:01',4),
+  (1067,1085,'2014-11-22 11:20:56',4),
+  (1068,1086,'2014-11-22 11:21:36',4),
+  (1069,1087,'2014-11-22 11:26:08',1),
+  (1070,1088,'2014-11-22 19:28:00',4),
+  (1071,1088,'2014-11-22 19:37:42',4),
+  (1072,1089,'2014-11-22 19:37:55',4),
+  (1073,1110,'2014-11-22 19:40:09',4),
+  (1074,1111,'2014-11-22 19:49:17',4),
+  (1075,1092,'2014-12-05 23:39:03',1),
+  (1076,1090,'2014-12-05 23:41:17',1),
+  (1077,1112,'2014-12-06 23:49:29',5),
+  (1078,1094,'2014-12-07 03:54:24',5);
+COMMIT;
+
+#
+# Data for the `tipovehiculo` table  (LIMIT 0,500)
+#
+
+INSERT INTO `tipovehiculo` (`idTipoVehiculo`, `descripcion`) VALUES
+  (1,'Moto'),
+  (2,'Auto'),
+  (3,'Furgoneta'),
+  (4,'Camioneta');
+COMMIT;
+
+#
+# Data for the `user` table  (LIMIT 0,500)
+#
+
+INSERT INTO `user` (`user_id`, `username`, `email`, `display_name`, `password`, `state`) VALUES
+  (1,'blancag','blanca@gmail.com','Blanca Gonzalez','$2y$14$plRfckm65TrJWkA/g1WiA.y5Htuv6F1gOcc3d/Ll5hkI7fClkC0Me',NULL),
+  (2,'lcaballero','lcaballero@gmail.com','Luis Caballero','$2y$14$sQ2VDtV5CjCFpYOsaBITKedbcqYLnR5Fu3N6gv/soa.7xhcvzb5Ei',NULL),
+  (3,'bernardo','ber@gmail.com','Bernardo Sosa','$2y$14$WTlo9A8ExbsBnGhGvLuBZ.GD8BXRZVpB250VHH54JqzAFsiviIifu',NULL),
+  (4,'mmaldonado','maldonado@gmail.com','Maricel Maldonado','$2y$14$A3AEL/YiV6kfAZ0iEVlsi.WUohs0gbrTaBWrG.fuA3/NHekZvcxgi',NULL),
+  (5,'machu','machu@gmail.com','Machu Maldonado','$2y$14$bE2tj0v2wVOgD/lFdlCa8.sWqKwh0rYKP68plgCHGnfNgQFbKl2uy',NULL);
+COMMIT;
+
+#
+# Data for the `user_role` table  (LIMIT 0,500)
+#
+
+INSERT INTO `user_role` (`role_id`, `default`, `parent`) VALUES
+  ('admin',0,NULL),
+  ('contravencion',0,NULL),
+  ('guest',1,NULL),
+  ('pagos',0,NULL),
+  ('user',0,NULL);
+COMMIT;
+
+#
+# Data for the `user_role_linker` table  (LIMIT 0,500)
+#
+
+INSERT INTO `user_role_linker` (`user_id`, `role_id`) VALUES
+  (1,'admin'),
+  (1,'user'),
+  (2,'contravencion'),
+  (2,'user'),
+  (3,'pagos'),
+  (3,'user'),
+  (4,'contravencion'),
+  (4,'pagos'),
+  (4,'user'),
+  (5,'admin');
+COMMIT;
+
+#
+# Data for the `vehiculo` table  (LIMIT 0,500)
+#
+
+INSERT INTO `vehiculo` (`idVehiculo`, `nroChapa`, `color`, `modelo`, `cedulaAutomotor`, `propietario`, `ci_Propietario`, `idTipoVehiculo`) VALUES
+  (3,'45258','Rojo','Toyota - Hilux','123456','Nelson','4265789',1),
+  (1,'ABC','negro11','Kia - Sorento','1111','maricel1111','3691111',1);
+COMMIT;
+

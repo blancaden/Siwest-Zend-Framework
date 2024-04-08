@@ -1,0 +1,77 @@
+<?php
+
+require_once ('../' . $this->basePath() . '/dompdf/dompdf_config.inc.php');
+
+$html = '';
+$html .= '<html><style>
+    thead th {   background-color: #5d8b3d; color: white; font-size: 12px}
+</style>' .
+        '<body><h1 align="center">' . 'Reporte de Contravención' . '</h1><br>';
+$html .= '<table class="table table-condensed table-responsive ">
+        <thead>
+            <tr>
+            <th>Inspector</th>
+                <th>Conductor</th>
+                <th>CI</th>
+                <th>Dirección</th>
+                <th>Teléfono</th>
+                <th>Nro Registro</th>
+                <th>Fecha Contravención</th>
+                <th>Contravención</th>
+                <th>Estado Pago</th>
+                <th align="right">Monto</th>
+
+            </tr>
+        </thead>
+        <tbody>    ';
+$summonto = NULL;
+foreach ($buscar as $bus) {
+    $summonto += $bus['monto'];
+
+    $html .= '
+                <tr>
+                <td>' . $bus['inspector'] . ' </td>
+                    <td>' . $bus['nombre'] . ' ' . $bus['apellido'] . '</td>
+                    <td>' . $bus['cedula'] . ' </td>
+                    <td>' . $bus['direccion'] . '</td>
+                    <td>' . $bus['telefono'] . '</td>
+                    <td>' . $bus['registroNro'] . ' </td>
+                    <td>' . $bus['fecha'] . ' </td>                    
+                    <td>' . $bus['descripcion'] . ' </td>
+                    <td>' . $bus['estadoPago'] . ' </td>
+                        <td align="right">' . number_format($bus['monto'], 0, ',', '.') . '
+                </tr>';
+}
+$html .=' 
+<tr style="background-color: #E0E0FF">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td align="right" ><b>' . number_format($summonto, 0, ',', '.') . '</b></td>
+                </tr> </tbody>
+</table>
+
+
+</body>
+</html>';
+
+//echo $html;
+
+ob_start();
+$dompdf = new DOMPDF();
+//$dompdf->set_paper("letter", "portrait");
+$dompdf->load_html(utf8_decode($html));
+$dompdf->render();
+/* /$pdf = $dompdf->output();//asignamos la salida a una variable
+  //file_put_contents('Reporte Multa-' . date('Y-m-d') . '.pdf', $pdf);//colocamos la salida en un archivo
+  //echo "<a href=\"archivo.pdf\" target=\"_blank\"> Reporte Multa-" . date('Y-m-d') . ".pdf'</a>";//imprimo la liga para descargar el pdf
+ */
+$dompdf->stream('Reporte Multa-' . date('Y-m-d') . '.pdf');
+//echo $dompdf;
+

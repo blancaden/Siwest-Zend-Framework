@@ -1,0 +1,39 @@
+<?php 
+$title = 'Vehiculos/Informacion';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<p><a href="<?php echo $this->url('vehiculo', array( 
+        'action'=>'add'));?>">Registrar Vehiculo</a></p>
+
+<table class="table">
+<tr>
+    <th>Id Vehiculo</th>
+    <th>Chapa Nro.</th>
+    <th>Color</th>
+    <th>Modelo</th>
+    <th>Ced.Automotor</th>
+    <th>Propietario</th>
+    <th>CI.Propietario</th>
+    <th>Tipo Vehiculo</th>
+    <th>&nbsp;</th>
+</tr>
+<?php foreach($vehiculos as $vehiculo) : ?>
+<tr>
+    <td><?php echo $this->escapeHtml($vehiculo['idVehiculo']);?></td>
+    <td><?php echo $this->escapeHtml($vehiculo['nroChapa']);?></td>
+    <td><?php echo $this->escapeHtml($vehiculo['color']);?></td>
+    <td><?php echo $this->escapeHtml($vehiculo['modelo']);?></td>
+    <td><?php echo $this->escapeHtml($vehiculo['cedulaAutomotor']);?></td>
+    <td><?php echo $this->escapeHtml($vehiculo['propietario']);?></td>
+    <td><?php echo $this->escapeHtml($vehiculo['ci_Propietario']);?></td>
+    <td><?php echo $this->escapeHtml($vehiculo['descripcion']);?></td> <!--ponemos descripcion porque ya hicimos la consulta que nos traia la descripcion entonces aca decía id tipo vehiculo y le cambiamos a descripcion porque es el campo que queremos que muestre los datos que es moto,auto por ejemplo-->
+    <td>
+        <a href="<?php echo $this->url('vehiculo',
+            array('action'=>'edit', 'id' =>$vehiculo['idVehiculo']));?>">Edit</a>
+        <a href="<?php echo $this->url('vehiculo',
+            array('action'=>'delete', 'id' =>$vehiculo['idVehiculo']));?>">Delete</a>
+    </td>
+</tr>
+<?php endforeach; ?>
+</table>

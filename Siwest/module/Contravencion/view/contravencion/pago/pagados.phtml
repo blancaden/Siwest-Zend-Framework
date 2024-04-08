@@ -1,0 +1,54 @@
+<style>
+    .volver{ float: right; font-size: 11px; font-weight: bold ; text-decoration: none; margin-top: 3%}
+    thead th { background-color: #5d8b3d; color: white; font-size: 12px}
+</style>
+<?php
+$title = 'Contravenciones Pagadas';
+$this->headTitle($title);
+?>
+
+<a href="<?php echo $this->url('pago', array('action' => 'index')) ?>" class="volver"> &twoheadleftarrow; Volver a pendientes </a>
+<h2 align="center"><?php echo $this->escapeHtml($title); ?></h2>
+<table class="table table-condensed table-responsive" id="filtrotable1">
+    <thead>
+        <tr>
+            <th type-filter="text">Nro. Boleta</th>
+            <th type-filter="text">Nombre</th>
+            <th type-filter="text">Apellido</th>
+            <th type-filter="text">Cedula</th>
+            <th type-filter="text">Direccion</th>
+            <th type-filter="text">Telefono</th>
+            <th type-filter="text">registroNro</th>
+            <th type-filter="ddl">Estado de pago</th>
+            <th type-filter="ddl">Fecha pago</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($pagados as $pago) : ?>
+            <tr>
+                <td><?php echo $this->escapeHtml($pago['idContravencion']); ?></td>
+                <td><?php echo $this->escapeHtml($pago['nombre']); ?></td>
+                <td><?php echo $this->escapeHtml($pago['apellido']); ?></td>
+                <td><?php echo $this->escapeHtml($pago['cedula']); ?></td>
+                <td><?php echo $this->escapeHtml($pago['direccion']); ?></td>
+                <td><?php echo $this->escapeHtml($pago['telefono']); ?></td>
+                <td><?php echo $this->escapeHtml($pago['registroNro']); ?></td>
+                <td><?php echo $this->escapeHtml($pago['estadoPago']); ?></td>
+                <td><?php echo $this->escapeHtml($pago['fechaPago']); ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+<script type="text/javascript">
+    $(function() {
+        var options = {
+            clearFiltersControls: [$('#cleanfilters')],
+        };
+        $('#filtrotable1').tableFilter(options);
+        //  $('#filtrotable1').tableFilter(options);
+    });
+
+
+
+</script>

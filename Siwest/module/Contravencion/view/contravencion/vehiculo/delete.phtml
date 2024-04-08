@@ -1,0 +1,24 @@
+<?php
+$title = 'Eliminar Registros';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<p>Esta seguro que desea borrar 
+  '<?php echo $this->escapeHtml($vehiculo->nroChapa); ?>'
+  '<?php echo $this->escapeHtml($vehiculo->color); ?>'
+  '<?php echo $this->escapeHtml($vehiculo->modelo); ?>'
+  '<?php echo $this->escapeHtml($vehiculo->cedulaAutomotor); ?>'
+  '<?php echo $this->escapeHtml($vehiculo->propietario); ?>'
+  '<?php echo $this->escapeHtml($vehiculo->ci_Propietario); ?>'
+  '<?php echo $this->escapeHtml($vehiculo->idTipoVehiculo); ?>'
+</p>
+<?php 
+$url = $this->url('vehiculo', array('action' => 'delete', 'id'=>$this->id)); ?>
+<form action="<?php echo $url; ?>" method="post">
+<div>
+  <input type="hidden" name="id" value="<?php echo (int)$vehiculo->idVehiculo; ?>" />
+  <input type="submit" name="del" value="Yes" />
+  <input type="submit" name="del" value="No" />
+</div>
+</form>

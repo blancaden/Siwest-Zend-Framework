@@ -1,0 +1,28 @@
+<?php
+$title = 'Confirmación de Pago';
+$this->headTitle($title);
+?>
+<div class="modal-dialog" >
+    <div class="modal-content">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a> 
+            <h2><?php echo $this->escapeHtml($title); ?><br></h2>
+            <h3>Nro Boleta: <?php echo $this->escapeHtml($mostrarmultaSelec['idContravencion']); ?></h3>
+        </div>
+        <div class="modal-body">           
+           <span style="font-size: 20px;">
+            <b>Nombre y Apellido: </b><?php echo $this->escapeHtml($mostrarmultaSelec['nombre'].' '.$mostrarmultaSelec['apellido']); ?><br>           
+            <b>C&eacute;dula: </b><?php echo $this->escapeHtml($mostrarmultaSelec['cedula']); ?><br>
+            <b>Direcci&oacute;n: </b><?php echo $this->escapeHtml($mostrarmultaSelec['direccion']); ?><br>
+            <b>Tel&eacute;fono: </b><?php echo $this->escapeHtml($mostrarmultaSelec['telefono']); ?><br>
+            <b>Nro Registro: </b><?php echo $this->escapeHtml($mostrarmultaSelec['registroNro']); ?><br>
+           </span>
+            <div align="right" style="font-size: 40px; font-weight: bold">
+                <b>Monto: </b> <?php echo $this->escapeHtml(number_format($mostrarmultaSelec['monto'],0,",",".")); ?><br></div>
+        </div>
+        <div class="modal-footer">
+            <a href="<?php echo $this->url('pago', array('action' => 'pagado', 'id' => $mostrarmultaSelec['idContravencion'])) ?>" class="btn btn-success">Pagar</a> 
+            <button type="button" class="btn" data-dismiss="modal" >Cancelar</button> 
+        </div>
+    </div>
+</div>

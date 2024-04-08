@@ -1,0 +1,23 @@
+<?php
+$title = 'Agregar Nuevo Vehiculo';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url('vehiculo', array('action' => 'add')));
+$form->prepare();
+
+echo $this->form()->openTag($form);
+echo $this->formHidden($form->get('idVehiculo')) ;
+echo $this->formRow($form->get('nroChapa'));
+echo $this->formRow($form->get('color'));
+echo $this->formRow($form->get('modelo'));
+echo $this->formRow($form->get('cedulaAutomotor'));
+echo $this->formRow($form->get('propietario'));
+echo $this->formRow($form->get('ci_Propietario'));
+echo $this->formRow($form->get('idTipoVehiculo'));
+echo $this->formInput($form->get('submit'));
+echo $this->form()->closeTag($form);
+

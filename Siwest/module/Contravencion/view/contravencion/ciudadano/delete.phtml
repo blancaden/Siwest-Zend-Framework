@@ -1,0 +1,20 @@
+<?php
+$title = 'Eliminar Datos';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<p>Esta seguro que desea borrar 
+  '<?php echo $this->escapeHtml($ciudadano->nombre); ?>'
+  '<?php echo $this->escapeHtml($ciudadano->apellido); ?>'
+  
+</p>
+<?php 
+$url = $this->url('ciudadano', array('action' => 'delete', 'id'=>$this->id)); ?>
+<form action="<?php echo $url; ?>" method="post">
+<div>
+  <input type="hidden" name="id" value="<?php echo (int)$ciudadano->idConductor; ?>" />
+  <input type="submit" name="del" value="Yes" />
+  <input type="submit" name="del" value="No" />
+</div>
+</form>

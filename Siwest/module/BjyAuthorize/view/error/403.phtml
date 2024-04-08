@@ -1,0 +1,16 @@
+<div align="center">
+<h1>403 Forbidden</h1>
+<p>
+    <?php if ($error == 'error-unauthorized-controller') : ?>
+      No tiene permisos para acceder  <?php echo($controller);?>
+        <?php if ($action) : ?>
+        ::<?php echo($action);?>Action()
+        <?php endif;?>
+        .
+    <?php elseif ($error == 'error-unauthorized-route') : ?>
+       Usted no esta autorizado para acceder a <?php echo $route;?>.
+    <?php else : ?>
+    Error desconocido.
+    <?php endif;?>
+</p>
+</div>

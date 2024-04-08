@@ -1,0 +1,18 @@
+<?php
+$title = 'Eliminar Municipio de la Lista';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<p>Esta seguro que desea Eliminar
+  '<?php echo $this->escapeHtml($municipio->municipio); ?>'
+</p>
+<?php 
+$url = $this->url('municipio', array('action' => 'delete', 'id'=>$this->id)); ?>
+<form action="<?php echo $url; ?>" method="post">
+<div>
+  <input type="hidden" name="id" value="<?php echo (int)$municipio->idMunicipio; ?>" />
+  <input type="submit" name="del" value="Yes" />
+  <input type="submit" name="del" value="No" />
+</div>
+</form>

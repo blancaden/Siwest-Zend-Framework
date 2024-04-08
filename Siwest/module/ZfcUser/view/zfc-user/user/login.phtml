@@ -1,0 +1,69 @@
+<?php echo $this->doctype(); ?>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <?php echo $this->headTitle($this->translate('SIWEST'))->setSeparator(' - ')->setAutoEscape(false) ?>
+        <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
+        <!-- Le styles -->
+        <?php
+        echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'img/icono.png', 'href' => $this->basePath() . '/img/icono.png'))
+                ->prependStylesheet($this->basePath() . '/css/bootstrap-theme.css')
+                ->prependStylesheet($this->basePath() . '/css/bootstrap-theme.min.css')
+                ->prependStylesheet($this->basePath() . '/css/bootstrap.css')
+                ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css')
+        ?>
+        <script src="<?= $this->basePath() ?>/js/jquery.min.js"></script>
+        <?php
+        echo $this->headScript()->prependFile($this->basePath() . '/js/html5.js', 'text/javascript', array('conditional' => 'lt IE 9',))
+                ->prependFile($this->basePath() . '/js/bootstrap.min.js')
+                ->prependFile($this->basePath() . '/js/jquery.min.js')
+                ->prependFile($this->basePath() . '/js/bootstrap.js')
+        ?>
+    </head>
+    <style>
+        body{
+            background-color: #5d8b3d 
+        }
+    </style>
+<!--            <img src="./logoempresa/barcos y rodados.png" style="width: 80px; margin-bottom: -10%">-->
+
+    <div class=" col-md-4 col-md-offset-4">
+
+        <?php
+        $form = $this->loginForm;
+        $form->prepare();
+        $form->setAttribute('action', $this->url('zfcuser/login'));
+        $form->setAttribute('method', 'post');
+        $form->setAttribute('class', 'form-horizontal well');
+        echo $this->form()->openTag($form)
+        ?>            
+
+        <div style="padding: 8%; padding-top: 1%"> 
+            <div class="form-group" align="center">
+                <img src="<?php echo $this->basePath()?>/img/caminera.png" width="150px"  >
+            </div>
+            <div style="color: #860000;  text-shadow: 3px 3px 15px red;">
+<!--                <i class="glyphicon glyphicon-thumbs-down"></i>-->
+                <?php echo $this->formElementErrors($form->get('identity')) ?>
+            </div>
+            <div class="form-group ">
+                <?php echo $this->formInput($form->get('identity')) ?>
+            </div>
+            <div class="form-group ">
+                <?php echo $this->formInput($form->get('credential')) ?>
+                <?php if ($this->redirect): ?>
+                    <input type="hidden" name="redirect" value="<?php echo $this->escapeHtml($this->redirect) ?>" />
+                <?php endif ?>
+            </div>
+
+            <div class="form-group ">
+
+                <?php echo $this->formButton($form->get('submit')) ?></dd>
+                <?php echo $this->form()->closeTag() ?>
+            </div>
+        </div>
+    </div>
+    <div style="clear: both"></div> 
+    <footer style="padding:0%; font-weight: bold; color:#fff; ">
+        <p style="text-align: center">&copy; 2013 - <?php echo date('Y') ?> <?php echo $this->translate(' - Todos los derechos Reservados.') ?></p>
+    </footer>

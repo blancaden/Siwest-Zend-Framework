@@ -1,0 +1,73 @@
+<?php
+$title = 'Buscar Conductor';
+$this->headTitle($title);
+?>
+<h1 align="center"><?php echo $this->escapeHtml($title); ?></h1><br>
+
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url('contravencion', array('action' => 'buscador')));
+$form->prepare();
+echo $this->form()->openTag($form);
+?>
+<center>
+    <div class="col-sm-3"></div>
+        <div class="form-group col-md-6 " align="center"><?php echo $this->formRow($form->get('buscador')); ?></div>
+        
+        <div class="form-group col-md-2" style="margin-top: 0.5%"> <?php echo $this->formInput($form->get('submit')); ?></div>
+   
+</center>
+<div style="clear: both"></div>
+<?php echo $this->form()->closeTag($form); ?>
+
+<?php if (count($buscar) > 0) { ?>
+    <br>
+    <table class="table table-condensed table-responsive ">
+        <thead>
+            <tr>
+                <th>Nombre y Apellido</th>
+                <th>CI</th>
+                <th>Direccion</th>
+                <th>Telefono</th>
+                <th>Nro Registro</th>
+             
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($buscar as $bus) { ?>
+                <tr>
+                    <td><?php echo $bus['nombre'] . ' ' . $bus['apellido'] ?></td>
+                    <td><?php echo $bus['cedula'] ?></td>
+                    <td><?php echo $bus['direccion'] ?></td>
+                    <td><?php echo $bus['telefono'] ?></td>
+                    <td><?php echo $bus['registroNro'] ?></td>
+                    <td><a href="<?php echo $this->url('contravencion', array('action' => 'addmulta', 'id' => $bus['idConductor'])) ?>" class="btn btn-danger" title="Registrar una multa al conductor"><span class="glyphicon glyphicon-edit"></span></a>
+                        <a href="<?php echo $this->url('contravencion', array('action' => 'historial', 'id' => $bus['idConductor'])) ?>" class="btn btn-success"  title="Historial de multas del conductor buscado"><span class="glyphicon glyphicon-list"></span></a></td>
+                </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+    <?php
+}
+if ($error == 1) {
+    ?>
+    <hr>
+    <div class="alert alert-danger" align="center">No se encuentran la cedula o el registro con el nro <b><?php echo $dato ?></b>
+        <a href="<?php echo $this->url('ciudadano', array('action' => 'add','id' => 0, 'param1' => $dato)) ?>" class="btn btn-success btn-mini"> <i class="icon-plus icon-white" ></i>Agregar nuevo conductor</a></div>
+    <?php } ?>
+
+<script type="text/javascript">
+    $('[data-toggle="modal"]').click(function(e) {
+        e.preventDefault();
+        var url = $(this).attr('href');
+        if (url.indexOf('#') == 0) {
+            $(url).modal('open');
+        } else {
+            $.get(url, function(data) {
+                $('<div class="modal fade">' + data + '</div>').modal();
+            }).success(function() {
+                $('#bancoForm #banco').focus();
+            });
+        }
+    });
+</script>

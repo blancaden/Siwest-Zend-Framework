@@ -1,0 +1,125 @@
+<style>
+    thead th {   background-color: #5d8b3d; color: white; font-size: 12px}
+</style>
+<?php
+$title = 'Reporte de Contravención';
+$this->headTitle($title);
+?>
+<h1 align="center"><?php echo $this->escapeHtml($title); ?></h1><br>
+
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url('reporte', array('action' => 'multasxrango')));
+$form->prepare();
+echo $this->form()->openTag($form);
+?>
+<center><div class="form-inline">
+        <div class="form-group"><?php echo $this->formRow($form->get('fechaInicio'));
+        ?></div>
+        <div class="form-group"><?php echo $this->formRow($form->get('fechaFinal')); ?>
+        </div>
+         <div class="form-group"><?php echo $this->formLabel($form->get('estadoPago')); 
+        ?><br><?php echo $this->formSelect($form->get('estadoPago')); 
+        ?>
+        </div>        
+
+        <div class="form-group"><?php echo $this->formLabel($form->get('usuario')); 
+        ?><br><?php echo $this->formSelect($form->get('usuario')); 
+        ?>
+        </div>        
+        <div class="form-group" style="margin-top:2%"> <?php echo $this->formInput($form->get('submit')); ?>
+         </div>
+        
+
+    </div></center>
+<div style="clear: both"></div>
+<?php echo $this->form()->closeTag($form); ?>
+
+<?php if (count($buscar) > 0) { ?>
+<div class="form-group" style="margin-top:1%; float: right">
+  
+    <a class="btn btn-default" href="<?php echo $this->url('reporte',array('action'=> 'generarpdf','id' => 0 ,'param1' => $fechaInicio, 'param2' => $fechaFinal,'param3'=> $usuario,'param4' => $estadoPago)) ?> "> Generar PDF </a>
+    <!--onclick="javascript:generarPdf()"--> 
+        </div>
+    <br>
+    <table class="table table-condensed table-responsive table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Inspector</th>
+                <th>Conductor</th>
+                <th>CI</th>
+                <th>Direccion</th>
+                <th>Telefono</th>
+                <th>Nro Registro</th>
+                <th>Fecha Contravencion</th>
+                <th>Contravencion</th>
+                <th>Estado Pago</th>
+                <th>Monto</th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            <?php 
+            $summonto = NULL;
+            foreach ($buscar as $bus) {
+                $summonto += $bus['monto'];
+                ?>
+                <tr>
+                    <td><?php echo $bus['inspector'] ?></td>
+                    <td><?php echo $bus['nombre'] . ' ' . $bus['apellido'] ?></td>
+                    <td><?php echo $bus['cedula'] ?></td>
+                    <td><?php echo $bus['direccion'] ?></td>
+                    <td><?php echo $bus['telefono'] ?></td>
+                    <td><?php echo $bus['registroNro'] ?></td>
+                    <td><?php echo $bus['fecha'] ?></td>                    
+                    <td><?php echo $bus['descripcion'] ?></td>
+                    <td><?php echo $bus['estadoPago'] ?></td>
+                    <td align="right"><?php echo number_format($bus['monto'],0,',','.') ?></td>
+
+                </tr>
+                
+            <?php } ?>
+                
+                <tr style="background-color: #E0E0FF">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td align="right" ><b><?php echo number_format($summonto,0,',','.') ?></b></td>
+                </tr>
+        </tbody>
+    </table>
+    <?php
+}
+ ?>
+
+<script type="text/javascript">
+// function generarPdf(){
+//    var fechaInicio = $('#fechaInicio').val();
+//    var fechaFinal = $('#fechaFinal').val();
+//    var usuario = $('#usuario').val();
+//    var estadoPago = $('#estadoPago').val();
+////    alert(fechaInicio);
+////    alert(fechaFinal);
+////    alert(usuario);
+//    $.ajax({
+//        type: 'POST',
+//        url: '<? echo $this->url('reporte',array('action'=>'generarpdf')); ?>',
+//        data:{ fechaInicio: fechaInicio, fechaFinal: fechaFinal, usuario: usuario ,estadoPago:estadoPago},
+//        success: function(data) {
+//   // encodeURIComponent(data);
+////              alert(data);
+////                     $('#myMoatadal').modal('hide'),
+//                },
+//    });
+//    }
+    $.fn.datepicker.defaults.format = "yyyy-mm-dd";
+    $('#fechaInicio').datepicker();
+    $('#fechaFinal').datepicker();
+</script>

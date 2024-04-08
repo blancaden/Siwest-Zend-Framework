@@ -1,0 +1,69 @@
+<style>
+    thead th { background-color: #5d8b3d; color: white; font-size: 12px}
+</style>
+<?php
+$title = 'Contravenciones Pendientes de Pago';
+$this->headTitle($title);
+?>
+<h2 align="center"><?php echo $this->escapeHtml($title); ?></h2>
+<a href="<?php echo $this->url('pago', array('action' => 'pagados')) ?>" class="btn btn-primary " style="float: right"> Pagados </a>
+<?php if ($pendientes) { ?>
+    <table class="table table-condensed table-responsive"  id="filtrotable">
+        <thead>
+            <tr>
+                <th type-filter="text">Nro. Boleta</th>
+                <th type-filter="text">Nombre</th>
+                <th type-filter="text">Apellido</th>
+                <th type-filter="text">Cedula</th>
+                <th type-filter="text">Direccion</th>
+                <th type-filter="text">Telefono</th>
+                <th type-filter="text">registroNro</th>
+                <th type-filter="ddl">Estado de pago</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($pendientes as $pago) : ?>
+                <tr>
+                    <td><?php echo $this->escapeHtml($pago['idContravencion']); ?></td>
+                    <td><?php echo $this->escapeHtml($pago['nombre']); ?></td>
+                    <td><?php echo $this->escapeHtml($pago['apellido']); ?></td>
+                    <td><?php echo $this->escapeHtml($pago['cedula']); ?></td>
+                    <td><?php echo $this->escapeHtml($pago['direccion']); ?></td>
+                    <td><?php echo $this->escapeHtml($pago['telefono']); ?></td>
+                    <td><?php echo $this->escapeHtml($pago['registroNro']); ?></td>
+                    <td><?php echo $this->escapeHtml($pago['estadoPago']); ?></td>
+                    <td><a href="<?php echo $this->url('pago', array('action' => 'confirmacion', 'id' => $pago['idContravencion'])) ?>" class="btn btn-default btn-mini" data-toggle="modal">Realizar Pago</a></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php }else { ?>
+    <div style="clear:both"></div>
+    <div class="alert alert-info" align="center">No existen multas pendientes de pago</div>
+<?php } ?>
+<script type="text/javascript">
+    $(function() {
+        var options = {
+            clearFiltersControls: [$('#cleanfilters')],
+        };
+        $('#filtrotable').tableFilter(options);
+    });
+
+
+
+
+    $('[data-toggle="modal"]').click(function(e) {
+        e.preventDefault();
+        var url = $(this).attr('href');
+        if (url.indexOf('#') == 0) {
+            $(url).modal('open');
+        } else {
+            $.get(url, function(data) {
+                $('<div class="modal fade">' + data + '</div>').modal();
+            }).success(function() {
+                $('#bancoForm #banco').focus();
+            });
+        }
+    });
+</script>

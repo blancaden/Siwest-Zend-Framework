@@ -1,0 +1,46 @@
+<style>
+    thead th {   background-color: #5d8b3d; color: white; font-size: 12px}
+</style>
+<?php
+$title = 'Ciudadano';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<p><a href="<?php echo $this->url('ciudadano', array(
+    'action' => 'add'));
+?>" class="btn btn-primary">Registrar Ciudadano</a></p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id Conductor</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Cedula</th>
+            <th>Direccion</th>
+            <th>Telefono</th>
+            <th>RegistroNro</th>
+            <th>E-mail</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+<?php foreach ($ciudadanos as $ciudadano) : ?>
+            <tr>
+                <td><?php echo $this->escapeHtml($ciudadano->idConductor); ?></td>
+                <td><?php echo $this->escapeHtml($ciudadano->nombre); ?></td>
+                <td><?php echo $this->escapeHtml($ciudadano->apellido); ?></td>
+                <td><?php echo $this->escapeHtml($ciudadano->cedula); ?></td>
+                <td><?php echo $this->escapeHtml($ciudadano->direccion); ?></td>
+                <td><?php echo $this->escapeHtml($ciudadano->telefono); ?></td>
+                <td><?php echo $this->escapeHtml($ciudadano->registroNro); ?></td>
+                <td><?php echo $this->escapeHtml($ciudadano->email); ?></td>
+                <td>
+                    <a href="<?php echo $this->url('ciudadano', array('action' => 'edit', 'id' => $ciudadano->idConductor));
+    ?>" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil"></span></a>
+                    <a href="<?php echo $this->url('ciudadano', array('action' => 'delete', 'id' => $ciudadano->idConductor));
+    ?>" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span></a>
+                </td>
+            </tr>
+<?php endforeach; ?>
+    </tbody></table>

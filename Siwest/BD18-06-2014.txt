@@ -1,0 +1,309 @@
+# SQL Manager 2007 for MySQL 4.3.1.3
+# ---------------------------------------
+# Host     : localhost
+# Port     : 3306
+# Database : siwest
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+SET FOREIGN_KEY_CHECKS=0;
+
+CREATE DATABASE `siwest`
+    CHARACTER SET 'latin1'
+    COLLATE 'latin1_swedish_ci';
+
+USE `siwest`;
+
+#
+# Structure for the `album` table : 
+#
+
+CREATE TABLE `album` (
+  `id` INTEGER(11) NOT NULL AUTO_INCREMENT,
+  `artist` VARCHAR(100) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
+  `title` VARCHAR(100) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+
+)ENGINE=InnoDB
+AUTO_INCREMENT=7 CHARACTER SET 'latin1' COLLATE 'latin1_swedish_ci';
+
+#
+# Structure for the `boleta` table : 
+#
+
+CREATE TABLE `boleta` (
+  `idBoleta` INTEGER(11) NOT NULL AUTO_INCREMENT,
+  `numeroBoleta` INTEGER(11) DEFAULT NULL,
+  PRIMARY KEY (`idBoleta`),
+  UNIQUE KEY `idBoleta` (`idBoleta`),
+  UNIQUE KEY `numeroBoleta` (`numeroBoleta`)
+
+)ENGINE=InnoDB
+AUTO_INCREMENT=1 CHARACTER SET 'latin1' COLLATE 'latin1_swedish_ci';
+
+#
+# Structure for the `ciudadano` table : 
+#
+
+CREATE TABLE `ciudadano` (
+  `idConductor` INTEGER(11) NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(30) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
+  `apellido` VARCHAR(30) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
+  `cedula` VARCHAR(20) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
+  `direccion` VARCHAR(20) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
+  `telefono` VARCHAR(20) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
+  `registroNro` VARCHAR(50) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
+  `email` VARCHAR(50) COLLATE latin1_swedish_ci DEFAULT NULL,
+  PRIMARY KEY (`idConductor`),
+  UNIQUE KEY `id` (`idConductor`),
+  UNIQUE KEY `CI` (`cedula`),
+  UNIQUE KEY `REGISTRONRO` (`registroNro`),
+  UNIQUE KEY `ci_2` (`cedula`),
+  UNIQUE KEY `registroNro_2` (`registroNro`),
+  UNIQUE KEY `cedula` (`cedula`)
+
+)ENGINE=InnoDB
+AUTO_INCREMENT=8 CHARACTER SET 'latin1' COLLATE 'latin1_swedish_ci';
+
+#
+# Structure for the `multasdescripcion` table : 
+#
+
+CREATE TABLE `multasdescripcion` (
+  `idMulta` INTEGER(11) NOT NULL AUTO_INCREMENT,
+  `articuloNro` INTEGER(11) DEFAULT NULL,
+  `descripcion` VARCHAR(60) COLLATE latin1_swedish_ci DEFAULT NULL,
+  `jornales` INTEGER(11) DEFAULT NULL,
+  `monto` INTEGER(20) DEFAULT NULL,
+  PRIMARY KEY (`idMulta`),
+  UNIQUE KEY `idMulta` (`idMulta`)
+
+)ENGINE=InnoDB
+AUTO_INCREMENT=12 CHARACTER SET 'latin1' COLLATE 'latin1_swedish_ci';
+
+#
+# Structure for the `contravencion` table : 
+#
+
+CREATE TABLE `contravencion` (
+  `idContravencion` INTEGER(11) NOT NULL AUTO_INCREMENT,
+  `idConductor` INTEGER(11) DEFAULT NULL,
+  `idMunicipio` INTEGER(11) NOT NULL,
+  `idTipoVehiculo` INTEGER(11) DEFAULT NULL,
+  `idMulta` INTEGER(11) NOT NULL,
+  `km` VARCHAR(30) COLLATE latin1_swedish_ci NOT NULL DEFAULT '\r\n',
+  `fecha` TIMESTAMP(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `numeroChapa` VARCHAR(20) COLLATE latin1_swedish_ci DEFAULT NULL,
+  `observacion` VARCHAR(50) COLLATE latin1_swedish_ci DEFAULT NULL,
+  `idUsuario` INTEGER(11) DEFAULT NULL,
+  `ruta` VARCHAR(20) COLLATE latin1_swedish_ci DEFAULT NULL,
+  `excedenteKgs` FLOAT(10,3) DEFAULT NULL,
+  `montoMultaBasculaRadar` INTEGER(11) DEFAULT NULL,
+  `estadoPago` ENUM('Pendiente','Pagado') DEFAULT 'Pendiente',
+  `tieneRegistro` ENUM('SI','NO') NOT NULL,
+  PRIMARY KEY (`idContravencion`),
+  UNIQUE KEY `idContravencion` (`idContravencion`),
+  KEY `idConductor` (`idConductor`),
+  KEY `idMulta` (`idMulta`),
+  KEY `idVehiculo` (`idTipoVehiculo`),
+  CONSTRAINT `contravencion_fk` FOREIGN KEY (`idConductor`) REFERENCES `ciudadano` (`idConductor`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `contravencion_fk1` FOREIGN KEY (`idMulta`) REFERENCES `multasdescripcion` (`idMulta`) ON DELETE NO ACTION ON UPDATE NO ACTION
+
+)ENGINE=InnoDB
+AUTO_INCREMENT=1038 CHARACTER SET 'latin1' COLLATE 'latin1_swedish_ci';
+
+#
+# Structure for the `municipio` table : 
+#
+
+CREATE TABLE `municipio` (
+  `idMunicipio` INTEGER(11) NOT NULL AUTO_INCREMENT,
+  `municipio` VARCHAR(50) COLLATE latin1_swedish_ci DEFAULT NULL,
+  PRIMARY KEY (`idMunicipio`)
+
+)ENGINE=InnoDB
+AUTO_INCREMENT=9 CHARACTER SET 'latin1' COLLATE 'latin1_swedish_ci';
+
+#
+# Structure for the `tipovehiculo` table : 
+#
+
+CREATE TABLE `tipovehiculo` (
+  `idTipoVehiculo` INTEGER(11) NOT NULL AUTO_INCREMENT,
+  `descripcion` VARCHAR(30) COLLATE latin1_swedish_ci DEFAULT NULL,
+  PRIMARY KEY (`idTipoVehiculo`),
+  UNIQUE KEY `idTipoVehiculo` (`idTipoVehiculo`)
+
+)ENGINE=InnoDB
+AUTO_INCREMENT=5 CHARACTER SET 'latin1' COLLATE 'latin1_swedish_ci';
+
+#
+# Structure for the `user` table : 
+#
+
+CREATE TABLE `user` (
+  `user_id` INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(255) COLLATE utf8_general_ci DEFAULT NULL,
+  `email` VARCHAR(255) COLLATE utf8_general_ci DEFAULT NULL,
+  `display_name` VARCHAR(50) COLLATE utf8_general_ci DEFAULT NULL,
+  `password` VARCHAR(128) COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `state` SMALLINT(5) UNSIGNED DEFAULT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `username` (`username`),
+  UNIQUE KEY `email` (`email`)
+
+)ENGINE=InnoDB
+AUTO_INCREMENT=2 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci';
+
+#
+# Structure for the `vehiculo` table : 
+#
+
+CREATE TABLE `vehiculo` (
+  `idVehiculo` INTEGER(11) NOT NULL AUTO_INCREMENT,
+  `nroChapa` VARCHAR(20) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
+  `color` VARCHAR(20) COLLATE latin1_swedish_ci DEFAULT NULL,
+  `modelo` VARCHAR(50) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
+  `cedulaAutomotor` VARCHAR(50) COLLATE latin1_swedish_ci NOT NULL DEFAULT '',
+  `propietario` VARCHAR(50) COLLATE latin1_swedish_ci DEFAULT NULL,
+  `ci_Propietario` VARCHAR(20) COLLATE latin1_swedish_ci DEFAULT '',
+  `idTipoVehiculo` INTEGER(11) DEFAULT NULL,
+  PRIMARY KEY (`nroChapa`),
+  UNIQUE KEY `NROCHAPA` (`nroChapa`),
+  UNIQUE KEY `CEDULAAUTOMOTOR` (`cedulaAutomotor`),
+  UNIQUE KEY `idVehiculo` (`idVehiculo`),
+  UNIQUE KEY `cedulaAutomotor_2` (`cedulaAutomotor`),
+  UNIQUE KEY `PROPIETARIO` (`propietario`),
+  UNIQUE KEY `propietario_2` (`propietario`),
+  KEY `CI_PROPIETARIO` (`ci_Propietario`),
+  KEY `idTipoVehiculo` (`idTipoVehiculo`)
+
+)ENGINE=InnoDB
+AUTO_INCREMENT=4 CHARACTER SET 'latin1' COLLATE 'latin1_swedish_ci';
+
+#
+# Data for the `album` table  (LIMIT 0,500)
+#
+
+INSERT INTO `album` (`id`, `artist`, `title`) VALUES
+  (1,'The Military Wives','In My Dreams'),
+  (2,'Adele','21'),
+  (3,'Bruce Springsteen','Wrecking Ball (Deluxe)'),
+  (4,'Lana Del Rey','Born To Die'),
+  (5,'Gotye','Making Mirrors'),
+  (6,'PAVADAPRUEBA','PRUEBA');
+COMMIT;
+
+#
+# Data for the `ciudadano` table  (LIMIT 0,500)
+#
+
+INSERT INTO `ciudadano` (`idConductor`, `nombre`, `apellido`, `cedula`, `direccion`, `telefono`, `registroNro`, `email`) VALUES
+  (1,'Carlos ','Benitez ','3220321','Fdo.de la Mora','0982547621','1369845','carlos@gmail.com'),
+  (3,'Blanca','Gonzalez ','4561237','J.A.Saldivar','0982546789','2316541',NULL),
+  (4,'Blanca','Gonzalez','4502876','Asuncion','0982555277','2365417','blankdgonzfigue@gmail.com'),
+  (5,'Maricel ','Maldonado','4248558','San Francisco','228943','123456','maricel.machu@gmail.com'),
+  (7,'Maricel','Gimenez','4123456','Brasilia','021456879','112255','maricel@gmail.com');
+COMMIT;
+
+#
+# Data for the `multasdescripcion` table  (LIMIT 0,500)
+#
+
+INSERT INTO `multasdescripcion` (`idMulta`, `articuloNro`, `descripcion`, `jornales`, `monto`) VALUES
+  (1,4,'Imprudencia en el manejo',5,318890),
+  (4,5,'Conducir en estado etilico (hasta 0,20%)',10,637780),
+  (5,5,'Conducir en estado etilico (hasta 0,80%)',15,956670),
+  (6,5,'Conducir en estado etilico (desde 0,81% y +)',20,1275560),
+  (7,6,'Menor de edad en el volante',10,637780),
+  (8,7,'Estacionar sobre ruta con desperfecto',5,318890),
+  (9,69,'Carecer de registro de conducir',10,637780),
+  (10,87,'Registro vencido y/o deteriorado.',5,318890),
+  (11,97,'Adelantamiento indebido',5,318890);
+COMMIT;
+
+#
+# Data for the `contravencion` table  (LIMIT 0,500)
+#
+
+INSERT INTO `contravencion` (`idContravencion`, `idConductor`, `idMunicipio`, `idTipoVehiculo`, `idMulta`, `km`, `fecha`, `numeroChapa`, `observacion`, `idUsuario`, `ruta`, `excedenteKgs`, `montoMultaBasculaRadar`, `estadoPago`, `tieneRegistro`) VALUES
+  (1007,1,1,1,1,'','2014-05-25 20:50:01','','',NULL,'',0.000,0,'Pagado','SI'),
+  (1008,3,6,4,5,'','2014-05-25 20:52:38','','',NULL,'',0.000,0,'Pagado','SI'),
+  (1009,4,2,4,9,'','2014-05-25 20:53:41','','',NULL,'',0.000,0,'Pagado','SI'),
+  (1010,4,2,2,11,'','2014-05-25 20:54:04','','',NULL,'',0.000,0,'Pagado','SI'),
+  (1011,1,1,2,9,'','2014-05-25 20:55:30','','',NULL,'',0.000,0,'Pagado','SI'),
+  (1012,3,6,3,6,'','2014-05-25 20:58:04','','',NULL,'',0.000,0,'Pagado','SI'),
+  (1013,4,1,1,11,'500','2014-05-25 21:42:17','532165','asdasdasd',NULL,'',0.000,0,'Pendiente','SI'),
+  (1014,5,3,3,1,'','2014-06-01 17:13:16','1258796','',NULL,'',0.000,0,'Pagado','SI'),
+  (1015,5,1,1,4,'1','2014-06-01 23:16:39','123456','sadasd sad asd sadsadsad sad asd',NULL,'3',2.000,3,'Pendiente','SI'),
+  (1016,5,1,1,4,'1','2014-06-01 23:17:33','123456','sadasd sad asd sadsadsad sad asd',NULL,'3',2.000,3,'Pendiente','SI'),
+  (1017,5,1,1,4,'1','2014-06-01 23:18:19','123456','sadasd sad asd sadsadsad sad asd',NULL,'3',2.000,3,'Pendiente','SI'),
+  (1018,5,3,2,1,'32','2014-06-01 23:19:59','3','asdasdas das dasd ',NULL,'3',3.000,434,'Pagado','SI'),
+  (1019,5,3,2,1,'32','2014-06-01 23:19:59','3','asdasdas das dasd ',NULL,'3',3.000,434,'Pagado','SI'),
+  (1020,5,3,2,1,'32','2014-06-01 23:20:15','3','asdasdas das dasd ',NULL,'3',3.000,434,'Pagado','SI'),
+  (1021,5,1,1,4,'1','2014-06-01 23:31:35','3','adasd',NULL,'3',2.000,3,'Pendiente','SI'),
+  (1022,5,1,1,4,'1','2014-06-01 23:32:37','3','adasd',NULL,'3',2.000,3,'Pendiente','SI'),
+  (1023,5,2,1,4,'','2014-06-01 23:40:12','','',NULL,'',0.000,0,'Pendiente','SI'),
+  (1024,5,2,2,9,'32','2014-06-01 23:41:32','3','sadasd asdasdasd asd a',NULL,'3',2.000,434,'Pagado','SI'),
+  (1025,5,2,2,9,'32','2014-06-01 23:41:32','3','sadasd asdasdasd asd a',NULL,'3',2.000,434,'Pagado','SI'),
+  (1026,5,1,2,4,'1','2014-06-01 23:42:54','3','',NULL,'3',2.000,3,'Pendiente','SI'),
+  (1027,5,1,2,4,'1','2014-06-01 23:56:28','3','sdfsdf sd',NULL,'3',2.000,3,'Pendiente','SI'),
+  (1028,5,1,1,1,'','2014-06-01 23:58:23','','',NULL,'',0.000,0,'Pendiente','SI'),
+  (1029,5,1,1,1,'','2014-06-02 00:00:34','','',NULL,'',0.000,0,'Pendiente','SI'),
+  (1030,5,3,1,4,'1','2014-06-02 00:10:48','1258796','',NULL,'3',2.000,3,'Pendiente','SI'),
+  (1031,5,3,1,4,'1','2014-06-02 00:11:52','1258796','',NULL,'3',2.000,3,'Pendiente','SI'),
+  (1032,5,3,1,4,'1','2014-06-02 00:12:10','1258796','',NULL,'3',2.000,3,'Pendiente','SI'),
+  (1033,5,8,4,11,'1','2014-06-02 00:14:06','2','12345678',NULL,'4',3.000,5,'Pendiente','NO'),
+  (1034,5,1,1,1,'1','2014-06-02 00:16:33','2','666',NULL,'4',3.000,5,'Pendiente','NO'),
+  (1035,5,1,1,4,'1','2014-06-02 00:17:28','2','asdas ',NULL,'4',3.000,5,'Pendiente','SI'),
+  (1036,5,2,2,4,'2','2014-06-02 00:19:10','3','777',NULL,'5',4.000,6,'Pagado','SI'),
+  (1037,5,1,1,4,'3','2014-06-02 00:20:04','4','8888',NULL,'67',5.000,8,'Pendiente','SI');
+COMMIT;
+
+#
+# Data for the `municipio` table  (LIMIT 0,500)
+#
+
+INSERT INTO `municipio` (`idMunicipio`, `municipio`) VALUES
+  (1,'Ypacarai'),
+  (2,'Asuncion'),
+  (3,'Aregua'),
+  (4,'San Lorenzo'),
+  (5,'Fdo.de la Mora'),
+  (6,'J.A.Saldivar'),
+  (7,'Guarambare'),
+  (8,'Lambare');
+COMMIT;
+
+#
+# Data for the `tipovehiculo` table  (LIMIT 0,500)
+#
+
+INSERT INTO `tipovehiculo` (`idTipoVehiculo`, `descripcion`) VALUES
+  (1,'Moto'),
+  (2,'Auto'),
+  (3,'Furgoneta'),
+  (4,'Camioneta');
+COMMIT;
+
+#
+# Data for the `user` table  (LIMIT 0,500)
+#
+
+INSERT INTO `user` (`user_id`, `username`, `email`, `display_name`, `password`, `state`) VALUES
+  (1,'blancag','blanca@gmail.com','Blanca Gonzalez','$2y$14$plRfckm65TrJWkA/g1WiA.y5Htuv6F1gOcc3d/Ll5hkI7fClkC0Me',NULL);
+COMMIT;
+
+#
+# Data for the `vehiculo` table  (LIMIT 0,500)
+#
+
+INSERT INTO `vehiculo` (`idVehiculo`, `nroChapa`, `color`, `modelo`, `cedulaAutomotor`, `propietario`, `ci_Propietario`, `idTipoVehiculo`) VALUES
+  (3,'45258','Rojo','Toyota - Hilux','123456','Nelson','4265789',1),
+  (1,'ABC','negro11','Kia - Sorento','1111','maricel1111','3691111',1);
+COMMIT;
+

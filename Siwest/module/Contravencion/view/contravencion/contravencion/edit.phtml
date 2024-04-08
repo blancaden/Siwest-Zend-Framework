@@ -1,0 +1,23 @@
+<?php
+$title = 'Modificar Datos';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+$form = $this->form;
+$form->setAttribute('action', 
+    $this->url('ciudadano', array('action' => 'edit', 'id'=>$id)));
+$form->prepare();
+
+echo $this->form()->openTag($form);
+echo $this->formHidden($form->get('idConductor')) ;
+echo $this->formRow($form->get('nombre')) ;
+echo $this->formRow($form->get('apellido'));
+echo $this->formRow($form->get('cedula')) ;
+echo $this->formRow($form->get('direccion')) ;
+echo $this->formRow($form->get('telefono')) ;
+echo $this->formRow($form->get('registroNro')) ;
+echo $this->formInput($form->get('submit'));
+echo $this->form()->closeTag($form);
+

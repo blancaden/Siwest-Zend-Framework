@@ -1,0 +1,18 @@
+<?php
+$title = 'Delete Tipo Vehiculo';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<p>Esta seguro que desea borrar 
+  '<?php echo $this->escapeHtml($tipovehiculo->descripcion); ?>'
+</p>
+<?php 
+$url = $this->url('tipovehiculo', array('action' => 'delete', 'id'=>$this->id)); ?>
+<form action="<?php echo $url; ?>" method="post">
+<div>
+  <input type="hidden" name="id" value="<?php echo (int)$tipovehiculo->idTipoVehiculo; ?>" />
+  <input type="submit" name="del" value="Yes" />
+  <input type="submit" name="del" value="No" />
+</div>
+</form>
